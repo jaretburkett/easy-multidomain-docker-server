@@ -1,4 +1,4 @@
-# DockerServer
+# Easy Multi-domain Docker Server
 This is an easy to use nginx server designed to handle multiple domains as docker services. 
 
 Now I am concerned what you heard is 
