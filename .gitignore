@@ -1,0 +1,8 @@
+.idea
+/websites/*
+!/websites/example.com
+/nginx-proxy/*
+!/nginx-proxy/docker-compose.yml
+!/nginx-proxy/nginx.tmpl
+/nginx-proxy-dev/*
+!/nginx-proxy-dev/docker-compose.yml

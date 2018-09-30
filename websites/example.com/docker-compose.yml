@@ -1,0 +1,38 @@
+version: '3'
+
+services:
+  wordpress:
+    image: wordpress
+    restart: unless-stopped # makes it restart if fails and on boot
+    links:
+    - database:mysql # link our "database" service to the mysql service in wordpress so it can use our database
+    environment:
+      WORDPRESS_DB_NAME: wordpress # name of db must batch database config
+      WORDPRESS_DB_PASSWORD: SoMePaSsWoRd # same password as database root password
+
+      # This section is needed to setup nginx and issue your Let's Encrypt cert
+      VIRTUAL_HOST: example.com # the incomming domain name
+      VIRTUAL_PORT: 80 # this is the port exposed below
+      LETSENCRYPT_HOST: example.com # the domain name to issue cert to
+      LETSENCRYPT_EMAIL: youremail@example.com # this email can be any of your emails
+    expose:
+    - 80 # must be same as virtual port above. Is the port your application runs on
+    volumes:
+    - ./html:/var/www/html # persistently store your files
+    - ./php.conf.uploads.ini:/usr/local/etc/php/conf.d/uploads.ini # this allows larger upload limits for wordpress
+
+  database:
+    image: mariadb
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: SoMePaSsWoRd # same password as entered above
+      MYSQL_DATABASE: wordpress # name of db must batch wordpress config
+    volumes:
+    - ./database:/var/lib/mysql # store the database folder so it will persist on rebuilds
+    - ./db-import:/docker-entrypoint-initdb.d # put <mysqldumpfile>.sql or <mysqldumpfile>.sql.gz here to import on start
+
+# this part is important. Set the default network to our nginx-proxy network. This is required for all sites
+networks:
+  default:
+    external:
+      name: nginx-proxy
