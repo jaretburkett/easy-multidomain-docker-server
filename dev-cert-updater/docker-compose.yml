@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  dev-cert-updater:
+    build:
+      context: ./build
+    container_name: dev-cert-updater
+    restart: unless-stopped
+    volumes:
+    - ../nginx-proxy-dev/certs:/main/certs
+    - ./keys:/main/keys
