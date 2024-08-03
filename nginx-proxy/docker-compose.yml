@@ -28,7 +28,7 @@ services:
     - /var/run/docker.sock:/tmp/docker.sock:ro
     - ./nginx.tmpl:/etc/docker-gen/templates/nginx.tmpl:ro
   nginx-letsencrypt:
-    image: jrcs/letsencrypt-nginx-proxy-companion
+    image: jrcs/letsencrypt-nginx-proxy-companion:2.3.0
     container_name: nginx-letsencrypt
     restart: unless-stopped
     volumes:
